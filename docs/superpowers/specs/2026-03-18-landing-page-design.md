@@ -45,7 +45,7 @@ Renders a single `<MuxPlayer>` component from `@mux/mux-player-react` with the f
 | `muted` | `true` |
 | `loop` | `true` |
 | `controls` | `false` |
-| `style` | `width: 100vw, height: 100vh, objectFit: "cover"` |
+| `style` | `{{ width: '100vw', height: '100vh', objectFit: 'cover' }}` |
 
 The player natively handles the poster → video transition when the video is ready.
 
