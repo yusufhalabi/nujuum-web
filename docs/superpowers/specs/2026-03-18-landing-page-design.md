@@ -20,12 +20,12 @@ Single-page app with minimal structure:
 ```
 nujuum-web/
 ├── public/
-│   └── first_frame.jpg        # Poster image served as static asset
+│   └── first_frame.jpg        # Poster image (moved from repo root to public/ during setup)
 ├── src/
 │   ├── App.tsx                # Root component — renders MuxPlayer full-screen
 │   ├── main.tsx               # React entry point
 │   └── index.css              # Global resets (margin: 0, padding: 0, overflow: hidden)
-├── index.html
+├── index.html                 # Must include: <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 ├── vite.config.ts
 ├── tsconfig.json
 └── package.json
@@ -41,7 +41,7 @@ Renders a single `<MuxPlayer>` component from `@mux/mux-player-react` with the f
 |------|-------|
 | `playbackId` | `Ix2ltzLkc3VaqEeUtXq02ezXjQlOOkM8011CVJG01BVYbs` |
 | `poster` | `/first_frame.jpg` |
-| `autoPlay` | `"muted"` |
+| `autoPlay` | `true` |
 | `muted` | `true` |
 | `loop` | `true` |
 | `controls` | `false` |
