@@ -1,11 +1,11 @@
-import MuxPlayer from '@mux/mux-player-react';
+type Style = React.CSSProperties & { [key: `--${string}`]: string };
 
 export default function App() {
   return (
-    <MuxPlayer
-      playbackId="Ix2ltzLkc3VaqEeUtXq02ezXjQlOOkM8011CVJG01BVYbs"
+    <mux-player
+      playback-id="Ix2ltzLkc3VaqEeUtXq02ezXjQlOOkM8011CVJG01BVYbs"
       poster="/first_frame.jpg"
-      autoPlay
+      autoplay
       muted
       loop
       preload="auto"
@@ -20,7 +20,7 @@ export default function App() {
         '--controls': 'none',
         '--video-object-fit': 'cover',
         '--loading-indicator-display': 'none',
-      }}
+      } as Style}
     />
   );
 }
