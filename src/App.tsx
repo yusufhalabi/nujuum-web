@@ -13,6 +13,7 @@ export default function App() {
         height: '100vh',
         objectFit: 'cover',
         '--controls': 'none',
+        '--video-object-fit': 'cover',
       }}
     />
   );
