@@ -16,6 +16,7 @@ export default function App() {
         left: 0,
         width: '100vw',
         height: '100vh',
+        aspectRatio: 'unset',
         '--controls': 'none',
         '--video-object-fit': 'cover',
         '--loading-indicator-display': 'none',
