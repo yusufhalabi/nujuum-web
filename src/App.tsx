@@ -1,8 +1,10 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { supabase } from './supabase';
 
 const PLAYBACK_ID = 'Ix2ltzLkc3VaqEeUtXq02ezXjQlOOkM8011CVJG01BVYbs';
 const CROSSFADE_BEFORE = 3; // seconds before end to trigger crossfade (must be > CROSSFADE_DURATION / 1000)
 const CROSSFADE_DURATION = 2000; // ms, fixed fade duration
+const PREWARM_BEFORE = 4; // seconds before end to pre-warm inactive player
 
 type Style = React.CSSProperties & { [key: `--${string}`]: string };
 
@@ -23,6 +25,51 @@ export default function App() {
   const refA = useRef<HTMLElement>(null);
   const refB = useRef<HTMLElement>(null);
   const crossfading = useRef(false);
+  const prewarmed = useRef(false);
+  const [email, setEmail] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email || submitting) return;
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const ua = navigator.userAgent;
+      const os = /(Windows|Mac|Linux|Android|iOS|iPhone|iPad)/.exec(ua)?.[1] ?? 'Unknown';
+      const browserMatch =
+        ua.match(/(Chrome|Firefox|Safari|Edge|Opera|OPR|Brave)\/[\d.]+/) ??
+        ua.match(/(MSIE|Trident)\/[\d.]+/);
+      const browser = browserMatch?.[1]?.replace('OPR', 'Opera') ?? 'Unknown';
+
+      let ip = '';
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        ip = (await res.json()).ip;
+      } catch { /* ip stays empty */ }
+
+      const { error: dbError } = await supabase
+        .from('Waitlist')
+        .insert({ email, ip, os, browser });
+
+      if (dbError) {
+        if (dbError.code === '23505') {
+          setError('This email is already on the waitlist!');
+        } else {
+          setError('Something went wrong. Please try again.');
+        }
+      } else {
+        setSubmitted(true);
+      }
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   useEffect(() => {
     const a = refA.current;
@@ -38,18 +85,10 @@ export default function App() {
     function doStartCrossfade(fromIdx: number) {
       const toIdx = 1 - fromIdx;
       const from = players[fromIdx];
-      const to = players[toIdx];
 
-      to.style.zIndex = '2';
-      from.style.zIndex = '1';
-
-      to.currentTime = 0;
-      to.play().catch(() => {});
-
+      // Only fade the outgoing (top) player. Do NOT swap z-index yet.
       from.style.transition = `opacity ${CROSSFADE_DURATION}ms ease-in-out`;
       from.style.opacity = '0';
-      to.style.transition = `opacity ${CROSSFADE_DURATION}ms ease-in-out`;
-      to.style.opacity = '1';
 
       activeIdx = toIdx;
 
@@ -57,8 +96,14 @@ export default function App() {
         from.pause();
         from.currentTime = 0;
         from.style.transition = '';
-        from.style.opacity = '0';
+        from.style.opacity = '1'; // restore (hidden behind active)
+
+        // NOW swap z-index
+        players[toIdx].style.zIndex = '2';
+        from.style.zIndex = '1';
+
         crossfading.current = false;
+        prewarmed.current = false;
       }, CROSSFADE_DURATION + 50);
     }
 
@@ -88,14 +133,22 @@ export default function App() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const active = players[activeIdx] as any;
       if (active.duration && !crossfading.current) {
-        if (active.duration - active.currentTime < CROSSFADE_BEFORE) {
+        const remaining = active.duration - active.currentTime;
+
+        if (remaining < PREWARM_BEFORE && !prewarmed.current) {
+          prewarmed.current = true;
+          const inactive = players[1 - activeIdx] as any;
+          inactive.currentTime = 0;
+          inactive.play().catch(() => {});
+        }
+
+        if (remaining < CROSSFADE_BEFORE) {
           startCrossfade(activeIdx);
         }
       }
       rafId = requestAnimationFrame(tick);
     }
 
-    b.style.opacity = '0';
     rafId = requestAnimationFrame(tick);
 
     return () => {
@@ -128,78 +181,113 @@ export default function App() {
         position: 'absolute',
         inset: 0,
         zIndex: 3,
+        background: 'rgba(0, 0, 0, 0.25)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        zIndex: 4,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingTop: '28vh',
+        paddingTop: '16vh',
         gap: '24px',
         pointerEvents: 'none',
       }}>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+          <img
+            src="/Nujuum Logo.png"
+            alt="Nujuum"
+            style={{ height: 'clamp(96px, 16vw, 160px)', width: 'auto' }}
+          />
           <p style={{
             margin: 0,
             fontFamily: 'AppleGaramond, Georgia, serif',
             fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             color: '#fff',
             letterSpacing: '0.01em',
-            fontWeight: 700,
+            fontWeight: 500,
           }}>
-            Learn Arabic with
+            Speak Syrian Arabic
           </p>
-          <img
-            src="/Nujuum Logo.png"
-            alt="Nujuum"
-            style={{ height: 'clamp(48px, 8vw, 80px)', width: 'auto' }}
-          />
         </div>
-        <form
-          className="waitlist-form"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            background: 'rgba(255, 255, 255, 0.08)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            borderRadius: '100px',
-            padding: '6px 6px 6px 20px',
-            gap: '8px',
-            border: '1px solid rgba(255,255,255,0.25)',
+        {submitted ? (
+          <p style={{
+            color: '#fff',
+            fontFamily: 'AppleGaramond, Georgia, serif',
+            fontSize: '1.2rem',
             pointerEvents: 'auto',
-          }}
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <input
-            type="email"
-            placeholder="Enter your email..."
-            className="waitlist-input"
+          }}>
+            You're on the list!
+          </p>
+        ) : (
+          <form
+            className="waitlist-form"
             style={{
-              background: 'transparent',
-              border: 'none',
-              outline: 'none',
-              color: '#fff',
-              fontSize: '1rem',
-              width: '220px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '8px',
+              pointerEvents: 'auto',
             }}
-          />
-          <button
-            type="submit"
-            className="waitlist-btn"
-            style={{
-              background: '#fff',
-              color: '#000',
-              border: 'none',
-              borderRadius: '100px',
-              padding: '10px 22px',
-              fontSize: '0.95rem',
-              fontWeight: 500,
-              cursor: 'pointer',
-              whiteSpace: 'nowrap',
-            }}
+            onSubmit={handleSubmit}
           >
-            Join waitlist
-          </button>
-        </form>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              borderRadius: '100px',
+              padding: '6px 6px 6px 20px',
+              gap: '8px',
+              border: '1px solid rgba(255,255,255,0.25)',
+            }}>
+              <input
+                type="email"
+                required
+                placeholder="Enter your email..."
+                className="waitlist-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  color: '#fff',
+                  fontSize: '1rem',
+                  width: '220px',
+                }}
+              />
+              <button
+                type="submit"
+                disabled={submitting}
+                className="waitlist-btn"
+                style={{
+                  background: '#fff',
+                  color: '#000',
+                  border: 'none',
+                  borderRadius: '100px',
+                  padding: '10px 22px',
+                  fontSize: '0.95rem',
+                  fontWeight: 500,
+                  cursor: submitting ? 'wait' : 'pointer',
+                  whiteSpace: 'nowrap',
+                  opacity: submitting ? 0.7 : 1,
+                }}
+              >
+                {submitting ? 'Joining...' : 'Join waitlist'}
+              </button>
+            </div>
+            {error && (
+              <p style={{ color: '#ff6b6b', fontSize: '0.85rem', margin: 0 }}>
+                {error}
+              </p>
+            )}
+          </form>
+        )}
       </div>
     </div>
   );
