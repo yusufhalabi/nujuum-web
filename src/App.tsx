@@ -197,7 +197,11 @@ export default function App() {
         pointerEvents: 'none',
       }}>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-          <span className="logo-wordmark">Nujuum</span>
+          <img
+            src="/Nujuum Logo.png"
+            alt="Nujuum"
+            style={{ height: 'clamp(96px, 16vw, 160px)', width: 'auto' }}
+          />
           <p
             className="subtitle-text"
             style={{
