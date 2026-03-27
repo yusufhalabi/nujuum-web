@@ -18,6 +18,72 @@ html, body, #root {
 }
 
 
+/* ── Metallic gold wordmark ── */
+.logo-wordmark {
+  position: relative;
+  display: inline-block;
+  font-family: 'AppleGaramond', Georgia, serif;
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  padding-bottom: 0.1em;
+  overflow: visible;
+  background: linear-gradient(135deg, #C8960C 0%, #F5C842 50%, #B8790A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Noise grain overlay — clipped to text shape */
+.logo-wordmark::before {
+  content: 'Nujuum';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.10;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Shimmer highlight sweep */
+.logo-wordmark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    transparent 45%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 55%,
+    transparent 100%
+  );
+  background-size: 200% 200%;
+  animation: goldShimmer 4.5s ease-in-out 2s infinite;
+  pointer-events: none;
+  /* Clip to text shape */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes goldShimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+/* ── Warm ivory subtitle ── */
+.subtitle-text {
+  color: #FDF0DC;
+  text-shadow:
+    0px 1px 3px rgba(0, 0, 0, 0.6),
+    0px 0px 18px rgba(245, 185, 60, 0.35);
+}
+
 .waitlist-input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }

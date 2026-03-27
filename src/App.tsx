@@ -193,23 +193,21 @@ export default function App() {
         alignItems: 'center',
         justifyContent: 'flex-start',
         paddingTop: '16vh',
-        gap: '24px',
+        gap: '48px',
         pointerEvents: 'none',
       }}>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-          <img
-            src="/Nujuum Logo.png"
-            alt="Nujuum"
-            style={{ height: 'clamp(96px, 16vw, 160px)', width: 'auto' }}
-          />
-          <p style={{
-            margin: 0,
-            fontFamily: 'AppleGaramond, Georgia, serif',
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-            color: '#fff',
-            letterSpacing: '0.01em',
-            fontWeight: 500,
-          }}>
+          <span className="logo-wordmark">Nujuum</span>
+          <p
+            className="subtitle-text"
+            style={{
+              margin: 0,
+              fontFamily: 'AppleGaramond, Georgia, serif',
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+              letterSpacing: '0.01em',
+              fontWeight: 500,
+            }}
+          >
             Speak Syrian Arabic
           </p>
         </div>
@@ -266,8 +264,8 @@ export default function App() {
                 disabled={submitting}
                 className="waitlist-btn"
                 style={{
-                  background: '#fff',
-                  color: '#000',
+                  background: 'linear-gradient(160deg, #ffffff 0%, #e8e8e8 50%, #f5f5f5 100%)',
+                  color: '#111',
                   border: 'none',
                   borderRadius: '100px',
                   padding: '10px 22px',
