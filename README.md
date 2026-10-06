@@ -2,6 +2,22 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## Amp orbs
+
+Amp runs executable `.agents/setup` before creating a project snapshot. It uses
+the base orb's Node/npm toolchain and installs dependencies from `package-lock.json`,
+including build and lint tools. Exact snapshots skip setup; when setup runs again
+on a stale snapshot, npm reuses existing dependencies and its download cache.
+No additional system packages or local databases are needed.
+
+`.agents/resume` does not reinstall dependencies or require authentication.
+The site can render without Supabase configuration; waitlist submissions require
+`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. Setup does not create or overwrite
+environment files or authenticate to Supabase.
+
+Once ready, run `npm run build` or `npm run lint`. Start long-lived dev servers
+with `amp orb service start` rather than backgrounding `npm run dev`.
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)

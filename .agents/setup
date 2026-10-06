@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+
+# Amp's base image provides Node and npm. Check the engines required by Vite,
+# @vitejs/plugin-react, and their dependencies; the repo has no version pin.
+echo "Checking the orb's Node/npm toolchain..."
+node --eval '
+  const [major, minor] = process.versions.node.split(".").map(Number);
+  if (!(major >= 24 || (major === 22 && minor >= 13) || (major === 20 && minor >= 19))) {
+    console.error("Setup requires Node 20.19+, 22.13+, or 24+.");
+    process.exit(1);
+  }
+'
+node --version
+npm --version
+
+# npm install reuses restored node_modules and the lockfile on stale snapshots;
+# npm ci would delete and reinstall them on every setup run.
+echo "Installing dependencies (including build and lint tools)..."
+time npm install --prefer-offline --no-audit --no-fund --include=dev
+
+echo "Orb setup ready. Use npm run build, npm run lint, or npm run dev."

@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .vercel
 .env*
+
+# Amp's generated portal metadata
+.amp/portals/*
