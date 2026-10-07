@@ -111,7 +111,7 @@ export function Phone() {
             <span lang="ar" dir="rtl">
               صباح الخير
             </span>{" "}
-            — sabah el-kheir
+            (sabah el-kheir)
           </div>
           <div className="bubble incoming">
             literally, “a morning of goodness.”

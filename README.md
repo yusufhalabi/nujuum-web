@@ -11,9 +11,14 @@ on a stale snapshot, npm reuses existing dependencies and its download cache.
 No additional system packages or local databases are needed.
 
 `.agents/resume` does not reinstall dependencies or require authentication.
-The site can render without Supabase configuration; waitlist submissions require
-`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. Setup does not create or overwrite
-environment files or authenticate to Supabase.
+Every “Text Shams” link opens `sms:+14156576917` directly in the visitor’s
+messaging app; nothing is automatically sent. This was the sole assigned number
+returned by Linq’s read-only `GET /api/partner/v3/phone_numbers` on October 7,
+2026, with a HEALTHY reputation. The shared `TextShams` component in `src/App.tsx`
+owns the public destination; no Linq API key is needed by or exposed to the website.
+Devices without a registered messaging app need one to use these links. The site
+no longer collects email signups or requires Supabase. Setup does not create or
+overwrite environment files.
 
 Once ready, run `npm run build` or `npm run lint`. Start long-lived dev servers
 with `amp orb service start` rather than backgrounding `npm run dev`.

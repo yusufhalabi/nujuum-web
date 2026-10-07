@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { go, signupEvent } from "./navigation";
+import { go } from "./navigation";
 export function Link({
   to,
   children,
@@ -20,11 +20,7 @@ export function Link({
         onClick?.(e);
         if (!e.defaultPrevented && e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
           e.preventDefault();
-          if (to.split("?")[0] === "/get-started") {
-            window.dispatchEvent(new Event(signupEvent));
-          } else {
-            go(to);
-          }
+          go(to);
         }
       }}
     >

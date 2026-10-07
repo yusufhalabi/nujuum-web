@@ -221,7 +221,7 @@ export function Dashboard({ page }: { page: string }) {
                   <>
                     <b>That’s it. A lovely beginning ☀️</b>
                     <p>
-                      {greeting[0]} — a little phrase to take into your day.
+                      A little phrase to take into your day: {greeting[0]}.
                     </p>
                     {!completed && (
                       <button

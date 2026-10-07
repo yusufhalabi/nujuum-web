@@ -1,109 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import { Onboarding } from "./Onboarding";
 import { Dashboard } from "./Dashboard";
 import { Logo, Icon, Phone, MessageWindow } from "./components";
 import { Link } from "./Link";
 import { lessonCards } from "./lessons";
-import { WaitlistDialog } from "./WaitlistDialog";
-import { signupEvent } from "./navigation";
 
-function Header() {
-  const [menu, setMenu] = useState("");
-  const header = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const close = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenu("");
-    };
-    const closeOutside = (e: PointerEvent) => {
-      if (e.target instanceof Node && !header.current?.contains(e.target)) setMenu("");
-    };
-    window.addEventListener("keydown", close);
-    window.addEventListener("pointerdown", closeOutside);
-    return () => {
-      window.removeEventListener("keydown", close);
-      window.removeEventListener("pointerdown", closeOutside);
-    };
-  }, []);
+function TextShams({ className = "" }: { className?: string }) {
   return (
-    <header ref={header} className="site-header">
-      <Link to="/" aria-label="Shams home" className="brand">
-        <Logo />
-      </Link>
-      <nav aria-label="Primary" className="desktop-nav">
-        {["Product", "Resources"].map((label) => (
-          <div className="nav-group" key={label}>
-            <button
-              aria-expanded={menu === label}
-              onClick={() => setMenu(menu === label ? "" : label)}
-            >
-              {label}
-              <Icon name="chevron" size={14} />
-            </button>
-            {menu === label && (
-              <div className="nav-popover" onClick={() => setMenu("")}>
-                {(label === "Product"
-                  ? [
-                      ["Meet Shams", "/"],
-                      ["Lessons", "/lessons"],
-                      ["Your Shams", "/home"],
-                    ]
-                  : [
-                      ["How it works", "/docs"],
-                      ["FAQs", "/faq"],
-                      ["About Shams", "/about"],
-                    ]
-                ).map(([text, path]) => (
-                  <Link to={path} key={path}>
-                    {text}
-                    <Icon name="arrow" size={15} />
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-        <Link to="/pricing">Pricing</Link>
-        <Link to="/about">Company</Link>
-      </nav>
-      <div className="header-actions">
-        <Link to="/login">Log in</Link>
-        <Link to="/get-started" className="button small dark">
-          Get Started
-        </Link>
-      </div>
-      <button
-        className="mobile-menu-toggle"
-        aria-label={menu === "mobile" ? "Close menu" : "Open menu"}
-        aria-expanded={menu === "mobile"}
-        onClick={() => setMenu(menu === "mobile" ? "" : "mobile")}
-      >
-        <Icon name={menu === "mobile" ? "close" : "menu"} />
-      </button>
-      {menu === "mobile" && (
-        <nav
-          className="mobile-menu"
-          aria-label="Mobile navigation"
-          onClick={() => setMenu("")}
-        >
-          {[
-            ["Product", "/"],
-            ["Lessons", "/lessons"],
-            ["Pricing", "/pricing"],
-            ["FAQs", "/faq"],
-            ["Company", "/about"],
-            ["Log in", "/login"],
-          ].map(([label, path]) => (
-            <Link key={label} to={path}>
-              {label}
-              <Icon name="arrow" />
-            </Link>
-          ))}
-          <Link to="/get-started" className="button dark">
-            Get Started
-          </Link>
-        </nav>
-      )}
-    </header>
+    <a href="sms:+14156576917" className={"button text-shams " + className}>
+      <span className="messages-icon" aria-hidden="true"><Icon name="chat" size={20} /></span>
+      Text Shams
+    </a>
   );
 }
 
@@ -112,10 +18,8 @@ function Footer() {
     {
       title: "Product",
       links: [
-        ["Log in", "/login"],
         ["Lessons", "/lessons"],
         ["Explore", "/explore"],
-        ["Pricing", "/pricing"],
       ],
     },
     {
@@ -136,6 +40,7 @@ function Footer() {
   ];
   return (
     <footer className="site-footer wrap">
+      <div className="footer-cta"><TextShams /></div>
       <div className="footer-links">
         {groups.map(({ title, links }) => (
           <div key={title}>
@@ -172,24 +77,17 @@ function Hero() {
           <Icon name="right" size={14} />
         </Link>
         <h1>
-          Meet Shams,
-          <br className="desktop-break" /> your personal language tutor
+          Your Arabic Tutor,
+          <br /> in iMessage
         </h1>
         <div className="hero-buttons">
-          <Link to="/get-started" className="button dark">
-            Get Started
-          </Link>
-          <Link to="/lessons" className="button light">
-            Explore
-          </Link>
+          <TextShams />
         </div>
       </div>
       <div className="hero-phone">
         <Phone />
       </div>
-      <Link to="/get-started" className="button dark mobile-hero-cta">
-        Get Started
-      </Link>
+      <TextShams className="mobile-hero-cta" />
     </section>
   );
 }
@@ -283,9 +181,9 @@ function Features() {
     <>
       <section className="life-section">
         <h2>
-          Your language tutor,
+          A little Arabic,
           <br />
-          already in iMessage
+          every day
         </h2>
         <div className="language-ribbon" aria-hidden="true">
           {[
@@ -308,12 +206,14 @@ function Features() {
             </span>
           ))}
         </div>
+        <TextShams />
       </section>
       <section className="features wrap">
         {features.map((title, i) => (
           <article className={"feature-row feature-" + i} key={title}>
             <div className="feature-copy">
               <h2>{title}</h2>
+              <TextShams />
               {(i === 0 || i === 3) && (
                 <Link to="/lessons" className="text-link">
                   Explore lessons <Icon name="arrow" size={14} />
@@ -327,132 +227,6 @@ function Features() {
         ))}
       </section>
     </>
-  );
-}
-export function Pricing({ standalone = false }: { standalone?: boolean }) {
-  const [yearly, setYearly] = useState(false);
-  return (
-    <section
-      className={"pricing wrap " + (standalone ? "pricing-standalone" : "")}
-    >
-      <div className="section-heading">
-        <h2>Choose a plan to get started</h2>
-        <div className="billing-switch">
-          <button aria-pressed={!yearly} onClick={() => setYearly(false)}>
-            Monthly
-          </button>
-          <button aria-pressed={yearly} onClick={() => setYearly(true)}>
-            Yearly
-          </button>
-        </div>
-      </div>
-      <div className="price-grid">
-        {[
-          {
-            name: "Free",
-            price: 0,
-            features: [
-              "No credit card required",
-              "Everyday conversation practice",
-              "A learning path that starts with you",
-            ],
-          },
-          {
-            name: "Plus",
-            price: yearly ? 15 : 19,
-            features: [
-              "Personalized daily lessons",
-              "Voice notes and pronunciation practice",
-              "Remember and revisit new words",
-              "More room to practice",
-            ],
-          },
-          {
-            name: "Immersion",
-            price: yearly ? 39 : 49,
-            features: [
-              "Longer, deeper conversations",
-              "Practice for real-life situations",
-              "Your most personalized learning plan",
-              "Priority support",
-            ],
-          },
-        ].map((plan, i) => (
-          <article className={"price-card price-" + i} key={plan.name}>
-            <h3>{plan.name}</h3>
-            <div className="price">
-              <strong>${plan.price}</strong>
-              <span>/ month</span>
-            </div>
-            <small>
-              {i === 0
-                ? "Free to explore"
-                : yearly
-                  ? `$${plan.price * 12} billed yearly`
-                  : "Billed monthly"}
-            </small>
-            <p className="includes">
-              {i === 0
-                ? "Includes:"
-                : `Everything in ${i === 1 ? "Free" : "Plus"}, plus:`}
-            </p>
-            <ul>
-              {plan.features.map((feature) => (
-                <li key={feature}>
-                  <Icon name="check" size={15} />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-            <Link
-              to={"/get-started?plan=" + plan.name.toLowerCase()}
-              className={"button " + (i === 0 ? "light" : "dark")}
-            >
-              {i === 0 ? "Get Started" : "Try " + plan.name}
-            </Link>
-          </article>
-        ))}
-      </div>
-      <p className="preview-note">
-        Illustrative plans for the Shams preview. No payments are collected.
-      </p>
-      {standalone && (
-        <div className="comparison">
-          <h2>Find your rhythm</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Practice, your way</th>
-                <th>Free</th>
-                <th>Plus</th>
-                <th>Immersion</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                ["Personal learning path", "✓", "✓", "✓"],
-                ["Text conversations", "✓", "✓", "✓"],
-                ["Voice practice", "—", "✓", "✓"],
-                ["Daily lessons", "—", "✓", "✓"],
-                ["Deeper conversations", "—", "—", "✓"],
-              ].map((row) => (
-                <tr key={row[0]}>
-                  {row.map((cell, i) =>
-                    i === 0 ? (
-                      <th key={i} scope="row">
-                        {cell}
-                      </th>
-                    ) : (
-                      <td key={i}>{cell}</td>
-                    ),
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </section>
   );
 }
 function Community() {
@@ -478,6 +252,7 @@ function Community() {
       <Link to="/explore" className="text-link">
         Find your next conversation <Icon name="arrow" size={14} />
       </Link>
+      <TextShams />
     </section>
   );
 }
@@ -485,17 +260,12 @@ function FinalCTA() {
   return (
     <section className="final-cta">
       <h2>
-        A new language
+        Your Arabic journey
         <br />
         starts with a text
       </h2>
       <div className="button-pair">
-        <Link to="/get-started" className="button dark">
-          Get Started
-        </Link>
-        <Link to="/lessons" className="button light">
-          Explore
-        </Link>
+        <TextShams />
       </div>
     </section>
   );
@@ -511,7 +281,7 @@ function Landing() {
 
     const elements = root.querySelectorAll<HTMLElement>(
       ".life-section h2, .feature-row, " +
-      ".section-heading, .price-card, .community h2, .story-card, .final-cta > *",
+      ".community h2, .story-card, .final-cta > *",
     );
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
@@ -555,7 +325,6 @@ function Landing() {
     <main ref={main}>
       <Hero />
       <Features />
-      <Pricing />
       <Community />
       <FinalCTA />
     </main>
@@ -604,9 +373,7 @@ function Lessons() {
           <p>Shams Lessons</p>
           <h1>Pick a conversation to make your world bigger</h1>
           <div className="button-pair">
-            <Link to="/get-started" className="button dark">
-              Get Started
-            </Link>
+            <TextShams />
             <Link to="/docs" className="button light">
               Make it yours
             </Link>
@@ -814,12 +581,7 @@ function Lessons() {
           </div>
           <h2>{selected.name}</h2>
           <div className="example-prompt">“{selected.example}”</div>
-          <Link
-            to={"/get-started?lesson=" + encodeURIComponent(selected.name)}
-            className="button dark"
-          >
-            Try this with Shams
-          </Link>
+          <TextShams />
         </dialog>
       )}
     </main>
@@ -831,11 +593,11 @@ const questions: [string, [string, string][]][] = [
     [
       [
         "What is Shams?",
-        "Shams is your personal language tutor, designed to help you learn through everyday conversations in iMessage. This website is a preview of the experience.",
+        "Shams is your personal Arabic tutor, designed to help you learn through everyday conversations in iMessage. The conversations shown on this website are illustrative previews.",
       ],
       [
         "Do I need another app?",
-        "The idea is simple: learn where you already text. The preview lets you explore the conversation and setup directly in your browser.",
+        "Use the messaging app you already have. Text Shams opens a conversation in your messaging app; you choose when to send your first message.",
       ],
       [
         "What can I practice?",
@@ -848,7 +610,7 @@ const questions: [string, [string, string][]][] = [
     [
       [
         "Can I start as a complete beginner?",
-        "Absolutely. Choose “Just starting” during setup and Shams will meet you at the beginning.",
+        "Absolutely. Tell Shams you’re just starting, and practice at your own pace.",
       ],
       [
         "Which language should I choose?",
@@ -864,12 +626,8 @@ const questions: [string, [string, string][]][] = [
     "Your account",
     [
       [
-        "Is this connected to iMessage yet?",
-        "The conversation shown here is a local preview. Live iMessage delivery will be available once the Shams messaging service is connected.",
-      ],
-      [
-        "How much does Shams cost?",
-        "You can explore this preview for free. The pricing page shows illustrative plans; there is no checkout and you will not be charged.",
+        "Does Text Shams send a message automatically?",
+        "No. It opens your messaging app with Shams as the recipient. You write and send the message yourself. The conversation previews on this website stay in your browser.",
       ],
       [
         "Where is my preview data stored?",
@@ -906,7 +664,7 @@ function Info({ page }: { page: string }) {
       "Meet Shams",
       [
         "Language is how we find our people, feel at home, and open ourselves to the world. Learning one should feel just as personal.",
-        "Shams means “sun” in Arabic. A small, familiar presence in your day — helping you find your words, one conversation at a time.",
+        "Shams means “sun” in Arabic. A small, familiar presence in your day, helping you find your words, one conversation at a time.",
         "Your personal language tutor. Right in your texts.",
       ],
     ],
@@ -914,7 +672,7 @@ function Info({ page }: { page: string }) {
       "Just say hello.",
       "How Shams works",
       [
-        "1. Make it yours. Tell Shams your name, the language you want to learn, and what brings you here.",
+        "1. Text Shams. Open your messaging app and say hello. Tell Shams what brings you to Arabic.",
         "2. Find your rhythm. Choose your level and a little time to practice. Five minutes is a lovely place to start.",
         "3. Start a conversation. Try a phrase, ask a question, or practice a real-life situation. Keep coming back, one text at a time.",
       ],
@@ -923,9 +681,9 @@ function Info({ page }: { page: string }) {
       "Your conversations are personal.",
       "Privacy",
       [
-        "When you join the Shams waitlist, we store your email address in our Supabase database to send you early-access and launch updates about Shams. We do not sell your email address.",
+        "This website no longer collects email signups. Previously submitted early-access email addresses remain in our Supabase database. We do not sell your email address.",
         "Any learning preferences and sample conversations you enter in the interactive product preview are stored in this browser on this device.",
-        "This preview does not send SMS messages, connect to iMessage, collect payments, or send your practice conversations to an AI service.",
+        "The Text Shams links open your messaging app. The website itself does not send messages, collect payments, or send your preview conversations to an AI service.",
         "To remove your local preview data, open Settings and select Clear preview data. Production privacy terms will be provided before the live service launches.",
       ],
     ],
@@ -933,9 +691,9 @@ function Info({ page }: { page: string }) {
       "A few things to know.",
       "Preview terms",
       [
-        "This website is an interactive demonstration of Shams. Its learning conversations and plan options illustrate the intended experience.",
+        "The learning conversations on this website are interactive demonstrations of the intended Shams experience.",
         "No paid service, account subscription, or live messaging connection is created by using this preview.",
-        "Production service terms and final pricing will be available before launch.",
+        "Production service terms will be available before launch.",
       ],
     ],
   };
@@ -948,40 +706,30 @@ function Info({ page }: { page: string }) {
       {paras.map((p) => (
         <p key={p}>{p}</p>
       ))}
-      <Link to="/get-started" className="button dark">
-        Meet Shams
-      </Link>
+      <TextShams />
     </main>
   );
 }
 export default function App() {
   const initialPath = window.location.pathname.replace(/\/$/, "") || "/";
-  const [path, setPath] = useState(initialPath === "/get-started" ? "/" : initialPath);
-  const [signupOpen, setSignupOpen] = useState(initialPath === "/get-started");
+  const [path, setPath] = useState(initialPath);
   useEffect(() => {
-    const openSignup = () => setSignupOpen(true);
     const update = () => {
       const nextPath = window.location.pathname.replace(/\/$/, "") || "/";
-      setPath(nextPath === "/get-started" ? "/" : nextPath);
-      setSignupOpen(nextPath === "/get-started");
+      setPath(nextPath);
     };
     window.addEventListener("popstate", update);
-    window.addEventListener(signupEvent, openSignup);
     return () => {
       window.removeEventListener("popstate", update);
-      window.removeEventListener(signupEvent, openSignup);
     };
   }, []);
+  const landing = ["/", "/get-started", "/login", "/pricing"].includes(path);
   useEffect(() => {
     document.title =
-      path === "/"
-        ? "Shams — Your personal language tutor"
-        : path.includes("get-started")
-          ? "Meet Shams"
-          : path.slice(1).replace(/^./, (x) => x.toUpperCase()) + " — Shams";
-  }, [path]);
-  if (path === "/login")
-    return <Onboarding login={path === "/login"} />;
+      landing
+        ? "Shams | Your Arabic Tutor, in iMessage"
+        : path.slice(1).replace(/^./, (x) => x.toUpperCase()) + " | Shams";
+  }, [path, landing]);
   if (
     ["/home", "/settings", "/practice", "/progress", "/messages"].includes(path)
   )
@@ -999,14 +747,9 @@ export default function App() {
       </div>
     );
   return (
-    <div className={"marketing" + (path === "/" ? " landing-page" : " secondary-page")}>
-      <Header />
-      {path === "/" ? (
+    <div className={"marketing" + (landing ? " landing-page" : " secondary-page")}>
+      {landing ? (
         <Landing />
-      ) : path === "/pricing" ? (
-        <main>
-          <Pricing standalone />
-        </main>
       ) : ["/lessons", "/recipes", "/explore"].includes(path) ? (
         <Lessons />
       ) : path === "/faq" ? (
@@ -1015,10 +758,6 @@ export default function App() {
         <Info page={path.slice(1)} />
       )}
       <Footer />
-      {signupOpen && <WaitlistDialog onClose={() => {
-        setSignupOpen(false);
-        if (window.location.pathname.replace(/\/$/, "") === "/get-started") window.history.replaceState({}, "", "/");
-      }} />}
     </div>
   );
 }
