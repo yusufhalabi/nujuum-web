@@ -59,8 +59,8 @@
   right: 14px;
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: #00000005;
 }
@@ -404,11 +404,6 @@ button,
   max-width: 800px;
   color: #050505;
 }
-.hero-content > p {
-  font-size: 16px;
-  color: #45494b;
-  line-height: 24px;
-}
 .hero-buttons {
   display: flex;
   gap: 12px;
@@ -659,13 +654,6 @@ button,
 .life-section h2 {
   line-height: 1.2;
 }
-.life-section sup {
-  font-family: OpenRunde, sans-serif;
-  font-size: 12px;
-  vertical-align: super;
-  letter-spacing: 0;
-  margin-left: 4px;
-}
 .language-ribbon {
   position: absolute;
   top: 360px;
@@ -730,24 +718,6 @@ button,
   background: #343433;
   color: #fff;
 }
-.life-caption {
-  position: absolute;
-  top: 690px;
-  left: 50%;
-  width: 430px;
-  transform: translateX(-50%);
-  text-align: left;
-  font-size: 15px;
-  line-height: 1.5;
-}
-.life-caption > span {
-  font-size: 12px;
-  color: #94938e;
-}
-.life-caption p {
-  margin-top: 14px;
-  max-width: 390px;
-}
 .feature-row {
   border-top: 1px solid #0000000c;
   min-height: 610px;
@@ -757,6 +727,8 @@ button,
   gap: 104px;
 }
 .feature-art {
+  grid-column: 1;
+  grid-row: 1;
   height: 424px;
   position: relative;
   background: #fdfcf9;
@@ -768,24 +740,19 @@ button,
   overflow: hidden;
 }
 .feature-copy {
+  grid-column: 2;
+  grid-row: 1;
   max-width: 424px;
   padding-right: 40px;
 }
 .feature-copy h2 {
-  margin: 14px 0 16px;
-}
-.feature-copy p {
-  font-size: 16px;
-  line-height: 1.5;
-  color: #4b4b47;
-}
-.footnote {
-  font-size: 12px;
-  color: #92928e;
+  margin: 0;
+  letter-spacing: -0.02em;
 }
 .text-link {
-  font-size: 13px;
-  color: #637e8f;
+  font-size: 16px;
+  font-weight: 500;
+  color: #4281af;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -796,6 +763,7 @@ button,
   grid-row: 1;
 }
 .feature-row:nth-child(even) .feature-copy {
+  grid-column: 1;
   grid-row: 1;
   padding-left: 64px;
   padding-right: 0;
@@ -856,12 +824,8 @@ button,
   line-height: 1.3;
   font-weight: 500;
 }
-.mini-lesson p {
-  font-size: 12px;
-  color: #888;
-  margin: 10px 0;
-}
 .mini-lesson > span {
+  margin-top: 14px;
   font-size: 11px;
   display: flex;
   gap: 5px;
@@ -1056,13 +1020,6 @@ button,
 .section-heading {
   text-align: center;
 }
-.section-heading > p {
-  font-size: 16px;
-  line-height: 1.5;
-  max-width: 490px;
-  color: #74736e;
-  margin: 22px auto 0;
-}
 .billing-switch {
   display: inline-flex;
   padding: 4px;
@@ -1106,14 +1063,8 @@ button,
     0 2px 8px #0000000a;
 }
 .price-card h3 {
-  font-size: 30px;
-}
-.plan-description {
-  font-size: 14px;
-  color: #989894;
-  line-height: 1.4;
-  margin-top: 7px;
-  min-height: 42px;
+  font-size: 26px;
+  letter-spacing: -0.02em;
 }
 .price {
   display: flex;
@@ -1199,21 +1150,18 @@ button,
 }
 .story-card b {
   display: block;
-  font-size: 13px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.4;
   max-width: 80%;
 }
-.story-card p {
-  font-size: 13px;
-  line-height: 1.5;
-  margin: 18px 0 20px;
-  color: #656560;
-}
 .story-card small {
-  font-size: 11px;
+  margin-top: 24px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #93938e;
+  color: #4281af;
 }
 .community > .text-link {
   margin-top: 54px;
@@ -1393,13 +1341,8 @@ thead th {
     sans-serif;
   letter-spacing: -0.02em;
 }
-.lesson-card p {
-  font-size: 14px;
-  color: #909089;
-  line-height: 1.5;
-  margin: 12px 0 24px;
-}
 .lesson-card > span {
+  margin-top: 24px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1454,10 +1397,6 @@ thead th {
 .lesson-modal h2 {
   font-size: 30px;
   margin-bottom: 15px;
-}
-.lesson-modal > p {
-  font-size: 15px;
-  color: #85847e;
 }
 .example-prompt {
   font-size: 17px;
@@ -2449,12 +2388,6 @@ legend {
   .desktop-break {
     display: none;
   }
-  .hero-content > p {
-    font-size: 15px;
-    line-height: 20px;
-    max-width: 335px;
-    margin-inline: auto;
-  }
   .hero-buttons {
     display: none;
   }
@@ -2486,9 +2419,6 @@ legend {
     max-width: 350px;
     margin: auto;
   }
-  .life-section sup {
-    font-size: 10px;
-  }
   .language-ribbon {
     top: 200px;
     height: 210px;
@@ -2510,12 +2440,6 @@ legend {
   }
   .word-4 {
     font-size: 8px;
-  }
-  .life-caption {
-    top: 465px;
-    max-width: 300px;
-    width: calc(100% - 60px);
-    font-size: 14px;
   }
   .features {
     width: 100%;
@@ -2545,15 +2469,13 @@ legend {
     width: 100%;
   }
   .feature-copy h2 {
-    margin: 12px 0 13px;
+    margin: 0;
+    font-size: 26px;
+    line-height: 1.15;
     max-width: 320px;
   }
-  .feature-copy p {
-    font-size: 14px;
-    max-width: 360px;
-  }
   .feature-copy .text-link {
-    font-size: 12px;
+    font-size: 14px;
   }
   .lesson-stack {
     height: 246px;
@@ -2565,9 +2487,6 @@ legend {
   }
   .mini-lesson h4 {
     font-size: 15px;
-  }
-  .mini-lesson p {
-    font-size: 11px;
   }
   .mini-lesson .lesson-symbol {
     width: 40px;
@@ -2605,11 +2524,6 @@ legend {
   .section-heading {
     text-align: left;
   }
-  .section-heading > p {
-    font-size: 14px;
-    margin: 18px 0 0;
-    max-width: 350px;
-  }
   .billing-switch {
     margin-top: 28px;
   }
@@ -2623,11 +2537,7 @@ legend {
     padding: 24px;
   }
   .price-card h3 {
-    font-size: 28px;
-  }
-  .plan-description {
-    max-width: 290px;
-    min-height: 40px;
+    font-size: 26px;
   }
   .price-card li {
     font-size: 13px;
@@ -2764,9 +2674,6 @@ legend {
   }
   .lesson-card h2 {
     font-size: 18px;
-  }
-  .lesson-card p {
-    font-size: 13px;
   }
   .lesson-modal {
     padding: 28px;
@@ -2953,9 +2860,6 @@ legend {
   }
   .announcement {
     font-size: 10px;
-  }
-  .hero-content > p {
-    font-size: 14px;
   }
   .onboarding {
     padding: 24px;
@@ -3401,7 +3305,7 @@ dialog.lesson-modal::backdrop {
     sans-serif;
   letter-spacing: -0.02em;
 }
-.collection-card > p {
+.collection-coming > p {
   font-size: 14px;
   color: #92978c;
   margin-top: 5px;
@@ -4081,5 +3985,265 @@ dialog.lesson-modal::backdrop {
   }
   .onboarding-phone .preview-skip {
     top: calc(100% - 6px);
+  }
+}
+
+/* Gently settle near section boundaries without forcing taller content past the reader. */
+html:has(.landing-page) {
+  --landing-header-height: 76px;
+  scroll-padding-top: var(--landing-header-height);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.landing-page) {
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+  }
+}
+html:has(.waitlist-dialog[open]) {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+.landing-page .hero,
+.landing-page .life-section,
+.landing-page .feature-row,
+.landing-page .pricing,
+.landing-page .community,
+.landing-page .final-cta {
+  scroll-snap-align: start;
+  min-height: calc(100svh - var(--landing-header-height));
+}
+.landing-page .hero {
+  height: auto;
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+  overflow: clip;
+}
+.landing-page .hero-content {
+  padding-top: 24px;
+}
+.landing-page .hero h1 {
+  margin-top: 28px;
+  margin-bottom: 18px;
+}
+.landing-page .hero-buttons {
+  margin-top: 24px;
+}
+.landing-page .hero-phone {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  margin: 48px auto 32px;
+  height: 580px;
+  mask-image: linear-gradient(#000 82%, transparent 100%);
+  flex-shrink: 0;
+}
+.landing-page .site-header {
+  position: sticky;
+  top: 0;
+  background: #fffdfa;
+  box-shadow: 0 1px 0 #00000006;
+}
+.landing-page .life-section {
+  height: auto;
+  min-height: max(560px, calc(100svh - var(--landing-header-height)));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 80px 24px;
+  border-top: 1px solid var(--line);
+}
+.landing-page .life-section h2 {
+  margin: 0 auto;
+}
+.landing-page .language-ribbon {
+  top: calc(50% - 118px);
+}
+.landing-page .feature-row,
+.landing-page .feature-row:last-child {
+  padding-block: 64px;
+}
+.landing-page .pricing,
+.landing-page .community,
+.landing-page .final-cta {
+  height: auto;
+  padding-block: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top: 1px solid var(--line);
+}
+.landing-page .community > .text-link {
+  align-self: center;
+}
+.landing-page .final-cta {
+  padding-inline: 24px;
+}
+.landing-page .custom-lesson {
+  left: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 84%;
+}
+.landing-page .custom-lesson > div {
+  gap: 12px;
+  justify-content: space-between;
+}
+.landing-page .custom-lesson .mini-button {
+  padding-inline: 10px;
+  white-space: nowrap;
+}
+.landing-page .scroll-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 800ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 800ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.landing-page .feature-row.scroll-reveal {
+  transform: none;
+}
+.landing-page .scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.landing-page .price-card:nth-child(2),
+.landing-page .story-card:nth-child(2) {
+  transition-delay: 90ms;
+}
+.landing-page .price-card:nth-child(3),
+.landing-page .story-card:nth-child(3) {
+  transition-delay: 180ms;
+}
+@media (min-width: 712px) {
+  .landing-page .hero h1 {
+    font-size: 52px;
+    line-height: 1;
+    max-width: min(920px, calc(100% - 64px));
+  }
+  .landing-page .feature-copy h2 {
+    font-size: 36px;
+    line-height: 1.15;
+  }
+  .landing-page .pricing {
+    padding-block: 32px;
+  }
+  .landing-page .pricing .billing-switch {
+    margin-top: 24px;
+  }
+  .landing-page .pricing .price-grid {
+    margin-top: 32px;
+  }
+  .landing-page .pricing .price-card {
+    min-height: 420px;
+  }
+}
+@media (max-width: 711px) {
+  html:has(.landing-page) {
+    --landing-header-height: 64px;
+  }
+  .landing-page .hero-phone {
+    height: 420px;
+    margin: 28px auto 0;
+  }
+  .landing-page .mobile-hero-cta {
+    position: sticky;
+    left: auto;
+    right: auto;
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    margin: auto 24px calc(24px + env(safe-area-inset-bottom));
+    width: auto;
+    min-height: 52px;
+    flex-shrink: 0;
+    border-radius: 16px;
+  }
+  .mobile-menu-toggle {
+    width: 44px;
+  }
+  .billing-switch button {
+    min-height: 44px;
+  }
+  .price-card > .button {
+    min-height: 48px;
+  }
+  .landing-page .life-section {
+    padding-block: 64px;
+  }
+  .landing-page .feature-row,
+  .landing-page .feature-row:last-child {
+    justify-content: center;
+    gap: 24px;
+    padding-block: 32px;
+  }
+  .landing-page .story-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+    scroll-snap-type: none;
+    margin: 32px 0 0;
+    padding: 0;
+  }
+  .landing-page .story-card {
+    min-width: 0;
+    scroll-snap-align: none;
+  }
+  .landing-page .scroll-reveal {
+    transition-delay: 0ms;
+  }
+}
+/* On short screens, keep the action above the preview rather than over its messages. */
+@media (max-width: 711px) and (max-height: 780px) {
+  .landing-page .mobile-hero-cta {
+    position: static;
+    order: 1;
+    margin: 24px 24px 0;
+  }
+  .landing-page .hero-phone {
+    order: 2;
+    margin-bottom: calc(24px + env(safe-area-inset-bottom));
+  }
+}
+@media (max-width: 1000px) and (max-height: 500px) {
+  html:has(.landing-page) {
+    scroll-snap-type: none;
+  }
+  .landing-page .hero-content {
+    padding-top: 12px;
+  }
+  .landing-page .hero h1 {
+    font-size: clamp(28px, 5vw, 40px);
+    margin-block: 16px;
+  }
+  .landing-page .hero-buttons,
+  .landing-page .mobile-hero-cta {
+    margin-top: 16px;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .landing-page .hero-art {
+      animation: hero-depth linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0px 950px;
+    }
+    .landing-page .language-ribbon {
+      animation: ribbon-drift linear both;
+      animation-timeline: view();
+    }
+  }
+}
+@keyframes hero-depth {
+  from { translate: 0 0; scale: 1; }
+  to { translate: 0 100px; scale: 1.06; }
+}
+@keyframes ribbon-drift {
+  from { translate: -5% 0; }
+  to { translate: 5% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landing-page .scroll-reveal {
+    opacity: 1;
+    transform: none;
   }
 }

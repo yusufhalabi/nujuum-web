@@ -9,15 +9,23 @@ import { signupEvent } from "./navigation";
 
 function Header() {
   const [menu, setMenu] = useState("");
+  const header = useRef<HTMLElement>(null);
   useEffect(() => {
     const close = (e: KeyboardEvent) => {
       if (e.key === "Escape") setMenu("");
     };
+    const closeOutside = (e: PointerEvent) => {
+      if (e.target instanceof Node && !header.current?.contains(e.target)) setMenu("");
+    };
     window.addEventListener("keydown", close);
-    return () => window.removeEventListener("keydown", close);
+    window.addEventListener("pointerdown", closeOutside);
+    return () => {
+      window.removeEventListener("keydown", close);
+      window.removeEventListener("pointerdown", closeOutside);
+    };
   }, []);
   return (
-    <header className="site-header">
+    <header ref={header} className="site-header">
       <Link to="/" aria-label="Shams home" className="brand">
         <Logo />
       </Link>
@@ -160,14 +168,13 @@ function Hero() {
       <div className="hero-art" />
       <div className="hero-content">
         <Link to="/about" className="announcement">
-          <span>Meet Shams</span>A little closer, with every word
+          <span>Meet Shams</span>Closer, with every word
           <Icon name="right" size={14} />
         </Link>
         <h1>
           Meet Shams,
           <br className="desktop-break" /> your personal language tutor
         </h1>
-        <p>A little practice, a real connection. Right in your texts.</p>
         <div className="hero-buttons">
           <Link to="/get-started" className="button dark">
             Get Started
@@ -200,7 +207,6 @@ function FeatureArt({ index }: { index: number }) {
               <Icon name={["heart", "plane", "chat"][i]} size={30} />
             </div>
             <h4>{name}</h4>
-            <p>A little practice, built around your life.</p>
             <span>
               <Logo /> Shams
             </span>
@@ -268,29 +274,18 @@ function FeatureArt({ index }: { index: number }) {
 }
 function Features() {
   const features = [
-    [
-      "Adapts to your world with personal lessons",
-      "Shams gets to know your goals, your interests, and your pace. Every conversation starts with you.",
-    ],
-    [
-      "A little practice, on your schedule",
-      "Make progress between the things you already do. Just send a text or a voice note whenever you have a moment.",
-    ],
-    [
-      "Keeps the conversation going",
-      "Build confidence with a tutor who remembers where you left off and helps you find the words.",
-    ],
-    [
-      "Goes wherever your curiosity takes you",
-      "Family conversations, a new city, or your favorite film. Turn the things you love into your next lesson.",
-    ],
+    "Lessons built around you",
+    "Practice by text or voice",
+    "Pick up where you left off",
+    "Turn your interests into lessons",
   ];
   return (
     <>
       <section className="life-section">
         <h2>
-          Shams fits into your life<sup>(1)</sup>,<br />
-          one conversation at a time
+          Your language tutor,
+          <br />
+          already in iMessage
         </h2>
         <div className="language-ribbon" aria-hidden="true">
           {[
@@ -313,29 +308,20 @@ function Features() {
             </span>
           ))}
         </div>
-        <div className="life-caption">
-          <span>(1)</span>
-          <p>
-            Learn a language in a familiar place (iMessage), with a personal
-            tutor who keeps things as real as a friend.
-          </p>
-        </div>
       </section>
       <section className="features wrap">
-        {features.map(([title, description], i) => (
+        {features.map((title, i) => (
           <article className={"feature-row feature-" + i} key={title}>
-            <div className="feature-art">
-              <FeatureArt index={i} />
-            </div>
             <div className="feature-copy">
-              <span className="footnote">({i + 2})</span>
               <h2>{title}</h2>
-              <p>{description}</p>
               {(i === 0 || i === 3) && (
                 <Link to="/lessons" className="text-link">
                   Explore lessons <Icon name="arrow" size={14} />
                 </Link>
               )}
+            </div>
+            <div className="feature-art">
+              <FeatureArt index={i} />
             </div>
           </article>
         ))}
@@ -351,10 +337,6 @@ export function Pricing({ standalone = false }: { standalone?: boolean }) {
     >
       <div className="section-heading">
         <h2>Choose a plan to get started</h2>
-        <p>
-          Start with a conversation. Make Shams part of your day as your
-          confidence grows.
-        </p>
         <div className="billing-switch">
           <button aria-pressed={!yearly} onClick={() => setYearly(false)}>
             Monthly
@@ -368,7 +350,6 @@ export function Pricing({ standalone = false }: { standalone?: boolean }) {
         {[
           {
             name: "Free",
-            description: "Get to know Shams and find your first words.",
             price: 0,
             features: [
               "No credit card required",
@@ -378,7 +359,6 @@ export function Pricing({ standalone = false }: { standalone?: boolean }) {
           },
           {
             name: "Plus",
-            description: "Build a daily habit with a tutor who knows you.",
             price: yearly ? 15 : 19,
             features: [
               "Personalized daily lessons",
@@ -389,8 +369,6 @@ export function Pricing({ standalone = false }: { standalone?: boolean }) {
           },
           {
             name: "Immersion",
-            description:
-              "Go a little further, with language in your everyday life.",
             price: yearly ? 39 : 49,
             features: [
               "Longer, deeper conversations",
@@ -402,7 +380,6 @@ export function Pricing({ standalone = false }: { standalone?: boolean }) {
         ].map((plan, i) => (
           <article className={"price-card price-" + i} key={plan.name}>
             <h3>{plan.name}</h3>
-            <p className="plan-description">{plan.description}</p>
             <div className="price">
               <strong>${plan.price}</strong>
               <span>/ month</span>
@@ -484,28 +461,15 @@ function Community() {
       <h2>A conversation for every day</h2>
       <div className="story-grid">
         {[
-          [
-            "At your favorite café",
-            "“One coffee, please.” A small sentence. A whole new kind of confidence.",
-            "Coffee & conversation",
-          ],
-          [
-            "Closer to your people",
-            "Find the words for a longer call home, a family story, or a familiar joke.",
-            "Family & connection",
-          ],
-          [
-            "Somewhere new",
-            "Ask for directions. Make a friend. Let a new place feel a little more like home.",
-            "Travel & discovery",
-          ],
-        ].map(([name, body, tag]) => (
+          "At your favorite café",
+          "Closer to your people",
+          "Somewhere new",
+        ].map((name) => (
           <Link to="/lessons" className="story-card" key={name}>
             <Icon name="chat" size={18} />
             <b>{name}</b>
-            <p>{body}</p>
             <small>
-              {tag}
+              Explore lessons
               <Icon name="arrow" size={13} />
             </small>
           </Link>
@@ -536,6 +500,68 @@ function FinalCTA() {
     </section>
   );
 }
+
+function Landing() {
+  const main = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const root = main.current;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!root || reducedMotion.matches || !("IntersectionObserver" in window)) return;
+
+    const elements = root.querySelectorAll<HTMLElement>(
+      ".life-section h2, .feature-row, " +
+      ".section-heading, .price-card, .community h2, .story-card, .final-cta > *",
+    );
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      }
+    }, { threshold: 0 });
+
+    for (const element of elements) {
+      // Never hide content already in view, including a restored scroll position.
+      const rect = element.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) continue;
+      element.classList.add("scroll-reveal");
+      observer.observe(element);
+    }
+
+    const revealFocused = (event: FocusEvent) => {
+      if (event.target instanceof Element) {
+        event.target.closest(".scroll-reveal")?.classList.add("is-visible");
+      }
+    };
+    const disableMotion = () => {
+      if (reducedMotion.matches) {
+        observer.disconnect();
+        elements.forEach((element) => element.classList.add("is-visible"));
+      }
+    };
+    root.addEventListener("focusin", revealFocused);
+    reducedMotion.addEventListener("change", disableMotion);
+    return () => {
+      observer.disconnect();
+      root.removeEventListener("focusin", revealFocused);
+      reducedMotion.removeEventListener("change", disableMotion);
+      elements.forEach((element) => element.classList.remove("scroll-reveal", "is-visible"));
+    };
+  }, []);
+
+  return (
+    <main ref={main}>
+      <Hero />
+      <Features />
+      <Pricing />
+      <Community />
+      <FinalCTA />
+    </main>
+  );
+}
+
 function Lessons() {
   const [filter, setFilter] = useState("All"),
     [search, setSearch] = useState(""),
@@ -641,17 +667,15 @@ function Lessons() {
           {[
             [
               "Travel & Discovery",
-              "Feel at home somewhere new",
               "Travel",
               ["ciao", "bonjour", "hola"],
             ],
             [
               "Family & Connection",
-              "Find the words that bring you closer",
               "Conversation",
               ["مرحبا", "hello", "こんにちは"],
             ],
-          ].map(([title, description, category, words]) => (
+          ].map(([title, category, words]) => (
             <button
               className="collection-card"
               key={title as string}
@@ -673,7 +697,6 @@ function Lessons() {
                 ))}
               </div>
               <h3>{title}</h3>
-              <p>{description}</p>
               <span className="collection-view">
                 View all <Icon name="arrow" size={14} />
               </span>
@@ -745,7 +768,6 @@ function Lessons() {
               <Icon name={card.icon} size={28} />
             </div>
             <h2>{card.name}</h2>
-            <p>{card.description}</p>
             <span>
               <Logo /> Shams
               <Icon name="arrow" size={16} />
@@ -791,7 +813,6 @@ function Lessons() {
             <Icon name={selected.icon} size={32} />
           </div>
           <h2>{selected.name}</h2>
-          <p>{selected.description}</p>
           <div className="example-prompt">“{selected.example}”</div>
           <Link
             to={"/get-started?lesson=" + encodeURIComponent(selected.name)}
@@ -978,16 +999,10 @@ export default function App() {
       </div>
     );
   return (
-    <div className={"marketing" + (path === "/" ? "" : " secondary-page")}>
+    <div className={"marketing" + (path === "/" ? " landing-page" : " secondary-page")}>
       <Header />
       {path === "/" ? (
-        <main>
-          <Hero />
-          <Features />
-          <Pricing />
-          <Community />
-          <FinalCTA />
-        </main>
+        <Landing />
       ) : path === "/pricing" ? (
         <main>
           <Pricing standalone />
