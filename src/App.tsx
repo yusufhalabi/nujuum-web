@@ -41,6 +41,11 @@ function Footer() {
   return (
     <footer className="site-footer wrap">
       <div className="footer-cta"><TextShams /></div>
+      <nav className="compact-footer" aria-label="About and legal">
+        <Link to="/about">About</Link>
+        <Link to="/privacy">Privacy</Link>
+        <Link to="/terms">Terms</Link>
+      </nav>
       <div className="footer-links">
         {groups.map(({ title, links }) => (
           <div key={title}>
@@ -324,6 +329,11 @@ function Landing() {
   return (
     <main ref={main}>
       <Hero />
+      <section className="mobile-story" aria-labelledby="mobile-story-title">
+        <h2 id="mobile-story-title">A little Arabic, every day</h2>
+        <p>Speak like a local</p>
+        <TextShams />
+      </section>
       <Features />
       <Community />
       <FinalCTA />

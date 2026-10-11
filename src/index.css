@@ -3657,6 +3657,10 @@ dialog.lesson-modal::backdrop {
 }
 
 /* Editorial flow: content-led chapters, without scroll capture or parallax. */
+.mobile-story,
+.compact-footer {
+  display: none;
+}
 .landing-page .hero {
   height: auto;
   min-height: 0;
@@ -3770,6 +3774,57 @@ dialog.lesson-modal::backdrop {
   }
 }
 @media (max-width: 711px) {
+  .landing-page .announcement,
+  .landing-page .life-section,
+  .landing-page .features,
+  .landing-page .community,
+  .landing-page .final-cta,
+  .landing-page .footer-links,
+  .landing-page .footer-meta,
+  .landing-page .footer-wordmark {
+    display: none;
+  }
+  .landing-page .mobile-story {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px 32px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .mobile-story h2 {
+    margin: 0;
+    font-size: 28px;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+  .mobile-story p {
+    margin: 28px 0 36px;
+    font-size: 18px;
+    line-height: 1.4;
+  }
+  .mobile-story .text-shams {
+    width: 100%;
+    max-width: 342px;
+    min-height: 52px;
+    border-radius: 16px;
+  }
+  .landing-page .site-footer {
+    padding: 0 0 32px;
+  }
+  .landing-page .compact-footer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .compact-footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
   .landing-page .hero {
     display: flex;
     flex-direction: column;
@@ -3778,7 +3833,7 @@ dialog.lesson-modal::backdrop {
     text-align: center;
   }
   .landing-page .hero h1 {
-    margin: 28px auto 0;
+    margin: 0 auto;
     font-size: clamp(30px, 8.2vw, 40px);
     line-height: 1.1;
   }
